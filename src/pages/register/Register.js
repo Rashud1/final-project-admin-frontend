@@ -1,7 +1,9 @@
 
 
 import React, {useState} from 'react'
-import { Card, Form, InputGroup, Button, Alert } from 'react-bootstrap'
+import { Card, Form, InputGroup, Button, Alert, Spinner} from 'react-bootstrap'
+import { useDispatch, useSelector } from "react-redux";
+import { userRegister } from "./userAction";
 
 const initialState = {
     fname: "",
@@ -15,15 +17,31 @@ const initialState = {
     gender: "",
 }
 const Register = () => {
+  const dispatch = useDispatch()
     const [user, setUser] = useState(initialState)
 const [passwordError, setPasswordError] = useState("")
+
+const {isPending, userRegisterResponse} = useSelector(state => state.user)
     
 
 const handleOnSubmit = e =>{
   e.preventDefault()
   //check for the password confirmation
-  const {password, confirmPassword} = user
-  password !== confirmPassword && setPasswordError("Password did  not match")
+  const {confirmPassword, ...newUser} = user
+  const { password } = user
+
+  if(password !== confirmPassword){
+
+  setPasswordError("Password did  not match")
+  return
+  }
+
+
+
+
+  dispatch(userRegister(newUser))
+
+  //
   console.log(user);
   //send teh form data to the server
 }
@@ -52,6 +70,13 @@ const handleOnSubmit = e =>{
             <Card className= "p-3 reg-form">
                 <h2 className="text-center">Register new user</h2>
                 <hr />
+
+    {isPending && <Spinner variant="primary" animation="border"/>}
+    {userRegisterResponse?.message && <Alert variant={userRegisterResponse?.status === "success" ? 'success' : "danger"}>{userRegisterResponse?.message} </Alert>}
+
+
+
+
             <Form onSubmit={handleOnSubmit}>
   <Form.Group className="mb-3">
     <Form.Label>First Name</Form.Label>

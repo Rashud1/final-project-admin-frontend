@@ -13,13 +13,19 @@ const userSlice = createSlice({
         requestPending: (state) =>{
             state.isPending = true
         }, 
+        responseSuccess : (state, {payload}) =>{
+            state.isPending = false
+            state.userRegisterResponse = payload || {}
+        },
         requestFail: (state, {payload}) => {
             state.isPending = false
-            state. userRegisterResponse = payload
+            state.userRegisterResponse = payload || {}
         }
     }
 })
 
 const {reducer, actions} = userSlice
+
+export const {requestPending, requestFail, responseSuccess} = actions
 
 export default reducer
