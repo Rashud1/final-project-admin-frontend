@@ -9,6 +9,8 @@ import {
  
 } from "react-router-dom"
 import { Dashboard } from "./pages/dashboard/Dashboard";
+import { PageNotFound } from './components/page not found/404PageNotFound';
+import { EmailVerification } from './pages/email-verification/EmailVerification';
 function App() {
   return (
     <div>
@@ -17,7 +19,9 @@ function App() {
 
         <Route path="/registration" children ={ <Register/>}/>
         <Route path="/dashboard" children ={ <Dashboard/>}/>
-        <Route path="/" children ={ <Login/>}/>
+        <Route path="/email-verification" children ={ <EmailVerification/>}/>
+        <Route exact path="/" children ={ <Login/>}/>
+        <Route exact path="*" children ={ <PageNotFound/>}/>
         {/* <Register/> */}
 
         {/* </Route> */}
